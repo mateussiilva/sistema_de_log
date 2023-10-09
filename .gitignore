@@ -1,0 +1,12 @@
+
+
+
+#IGNORANDO AQUIVOS 
+*.txt
+
+
+# PASTAS DE DESENVOLVIMENTO
+.vscode/
+__pycache__/
+.venv/
+testes/
