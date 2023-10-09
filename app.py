@@ -1,5 +1,5 @@
 from pprint import pprint as print
-import util.util as utl
+
 
 
 dados_impressoes = utl.ler_dados_json("arquivos_json/RIPLOG.json")
