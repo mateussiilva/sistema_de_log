@@ -12,7 +12,7 @@ def write_json_file(name_file_json,dados) -> bool:
     return False
     
 
-    
+  
 def read_json_file(name_file_json):
     with open(name_file_json,"r") as file:
         data = load(fp=file)

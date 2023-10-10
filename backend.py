@@ -1,71 +1,32 @@
-import os.path
-import re
-import sys
-import argparse
-import util.util as util
-from bs4 import BeautifulSoup
 
-PATTERN = re.compile(r"\n", re.I)
+import files.html.pyhtml as pyhtml
 
 
-def get_td(txt):
-    t = str(txt.get_text())
-    return re.sub(PATTERN, "", t)
+def gravar_informações_uteis(dados_base) -> list:
+    lista_impressoes_data = []
+    for value  in dados_base.values():
+        nome_arquivo = value.get("ARQUIVO")
+        dimensao = value.get("DIMENS\u00c3O")
+        perfil_icc = value.get('PERFIL ICC DE SAÍDA')
+        quantidade = value.get('QUANTIDADE DE CÓPIAS')
+        data_envio = value.get('INÍCIO, DATA E HORA DO RIP')
+         
+        lista_impressoes_data.append(
+            [nome_arquivo,dimensao,perfil_icc,quantidade,data_envio])
+
+    return lista_impressoes_data
+    
+    
 
 
-def criar_matrix_tabelas(contexto_html):
-    return list(contexto_html.find_all("table"))
-
-
-def criar_contexto_html(caminho_arquivo_html, codificação="latin-1"):
-    with open(caminho_arquivo_html, "r", encoding=codificação) as file_html:
-        html_content = file_html.read()
-    return BeautifulSoup(html_content, 'html.parser')
-
-
-def criar_dicionario_de_dados(matrix_tabelas):
-    lista_ = []
-    temp = []
-    lista_dicionarios = []
-    for tabela in matrix_tabelas:
-        chaves = list(map(lambda item: item.get_text().strip().replace(":", "").upper(), tabela.find_all("th")))
-        valores = list(map(lambda item: item.get_text().strip(), tabela.find_all("td")))
-
-        # removendo o primeiro elemento
-        valor_0 = chaves.pop(0)
-        if valor_0 == "INICIAR TRABALHO DE RIP":
-            # # removendo o ultimo elemento
-            chaves.pop(len(chaves) - 1)
-            dicionario = dict(zip(chaves, valores))
-            chaves.clear()
-            valores.clear()
-            lista_dicionarios.append(dicionario.copy())
-            dicionario.clear()
-
-    dicionarios = {
-        f"imp_{k}": v
-        for k, v in enumerate(lista_dicionarios)
-    }
-
-    return dicionarios
-
-
-def gerar_novo_nome(texto):
-    path, arquivo = os.path.split(texto)
-    novo_nome = arquivo.replace(".HTML", ".json")
-    return novo_nome
 
 
 if __name__ == "__main__":
-    FOLDER_JSON_FILES = "arquivos_json"
-    caminho_arquivo_html = ""
-    nome_arquivo_json = os.path.join(FOLDER_JSON_FILES, gerar_novo_nome(caminho_arquivo_html))
+    path_html_file = "/home/mateus/projetos/gerenciador_de_log/arquivos_htmls/29 08 23.HTML"
+    content_html = pyhtml.create_context_html(path_html_file)
+    list_dados = pyhtml.struct_base_file(content_html,"table")
+    dicinarios_limpos = pyhtml.create_dict_dados(list_dados)
+    for dados in dicinarios_limpos:
+        print(dados)
 
-    contexto_html = criar_contexto_html(caminho_arquivo_html)
-    matrix_tabelas = criar_matrix_tabelas(contexto_html)
-    dicionarios = criar_dicionario_de_dados(matrix_tabelas)
 
-    util.gravar_arquivo_json(
-        nome_arquivo=nome_arquivo_json,
-        dicionario_dados=dicionarios
-    )
