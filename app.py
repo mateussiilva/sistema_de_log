@@ -5,7 +5,7 @@ import PySimpleGUI as sg
 from PySimpleGUI import WIN_CLOSED,Window,Input,Button,FolderBrowse,popup_error
 
 # CONSTANTES DO SISTEMA
-SIZE_WINDOW = 800,480
+SIZE_WINDOW =760,480
 
 
 layout = [
@@ -25,7 +25,7 @@ layout = [
 ]
 
 
-window = Window("Gerenciador de LOG",layout,size=SIZE_WINDOW)
+window = Window("Gerenciador de LOG",layout,size=SIZE_WINDOW,relative_location=(800,0))
 
 while 1:
     events,values = window.read()
