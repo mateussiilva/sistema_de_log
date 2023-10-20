@@ -1,8 +1,7 @@
-from util.util import maior_dimensao
-
-texto = "110.0 x 230.0cm"
-dimensoes = maior_dimensao(texto)
+from files.pytxt import pytxt
+from files.json import json_mat
 
 
-for num in dimensoes:
-    print(num)
+file_json = r"json_files/1904/01 09 23.json"
+dados_json = json_mat.read_json_file(file_json).get("imp_1")
+for linhas 

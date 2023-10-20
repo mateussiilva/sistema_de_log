@@ -39,6 +39,8 @@ def main():
         path_json_file,dados=dicionario
     )        
     dicionario.clear()
+    
+
 if __name__ == "__main__":
     main()
 

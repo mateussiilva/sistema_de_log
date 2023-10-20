@@ -11,7 +11,6 @@ def struct_base_file(content_html,target_tag):
     return list(content_html.find_all(target_tag))
 
 
-
 def create_dict_dados(base_list):
     lista_dicionarios = []
     for tabela in base_list:
