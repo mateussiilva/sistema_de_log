@@ -1,21 +1,21 @@
 import files.html.pyhtml as pyhtml
-from files.json.json_mat import write_json_file
+from files.pyjson.json_mat import write_json_file
 import os
 import glob
 
 FOLDER_JSON_FILES = "json_files"
-
 PLOTTERS = {
     "mutoh":"1604",
     "prismajet":"1602",
-    "prismatex":"1904"}
-
+    "prismatex":"1904"
+    }
 PLOTTER = PLOTTERS["prismatex"]
 
 def create_new_name(path):
     nome, e = os.path.split(path)
     n, exte = os.path.splitext(e)
-    return n+".json"
+    return n + ".json"
+
 
 def get_files_htmls(path,extension="*.HTML") -> set:
     list_files_htmls = set()
@@ -24,10 +24,9 @@ def get_files_htmls(path,extension="*.HTML") -> set:
         
     return list_files_htmls
         
-    
-    
+        
 def main():
-    PATH = "testes/1904/08 23"
+    PATH = "testes/1904/09 23"
     files_htmls = get_files_htmls(PATH)
 
     path_json_file = os.path.join(FOLDER_JSON_FILES,PLOTTER,create_new_name(file_html))

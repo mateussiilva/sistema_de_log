@@ -16,14 +16,21 @@ def create_dict_dados(base_list):
     for tabela in base_list:
         chaves = list(
             map(
-                lambda item: item.get_text().strip().replace(":", "").upper(),
+                lambda item: 
+                item
+                    .get_text().strip()
+                    .replace(":", "").upper(),
                 tabela.find_all("th")
                 )
             )
         valores = list(
             map(
-                lambda item: item.get_text().strip(), 
-                tabela.find_all("td")
+                lambda item: 
+                item
+                    .get_text()
+                    .strip(), 
+                tabela
+                    .find_all("td")
                 )
             )
 

@@ -5,8 +5,9 @@ import PySimpleGUI as sg
 from PySimpleGUI import WIN_CLOSED,Window,Input,Button,FolderBrowse,popup_error
 
 # CONSTANTES DO SISTEMA
-SIZE_WINDOW =760,780
+SIZE_WINDOW =700,780
 
+sg.theme("Dark")
 
 layout = [
     [sg.Frame("Manipulação de Arquivos",layout=[
@@ -22,7 +23,7 @@ layout = [
         ],
     )],
     [
-        sg.Multiline(disabled=True,size=(100,40),key="-OUTPUT-")
+        sg.Multiline(disabled=True,size=(90,45),key="-OUTPUT-")
     ],
     [Button("Gerar json",key="-CREATE_JSON_FILES"),Button("Carregar Arquivo txt",key="-LOAD_FILE_TXT-")]
 ]
@@ -44,15 +45,13 @@ while 1:
             popup_error(
                 "Selecione as pastas de ORIGEM e de DESTINO",title="ERROR AO SELECIONAR AS PASTAS")
             break
+        
     if events == "-LOAD_FILE_TXT-":
         arquivo = "arquivo_.txt"
         with open(arquivo,"r") as file:
-            # for linha in file.readlines():
-                # print(linha)
             window["-OUTPUT-"].update(file.read())
     if events == WIN_CLOSED:
         break
-    
     
     
 window.close()    
