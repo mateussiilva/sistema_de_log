@@ -43,6 +43,7 @@ def create_dict_dados(base_list):
             dicionario = dict(zip(chaves, valores))
             chaves.clear()
             valores.clear()
+            
             lista_dicionarios.append(dicionario.copy())
             dicionario.clear()
 

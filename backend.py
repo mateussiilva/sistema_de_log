@@ -18,27 +18,27 @@ def create_new_name(path):
 
 
 def get_files_htmls(path,extension="*.HTML") -> set:
-    list_files_htmls = set()
+    list_files_htmls = []
     for file_html in glob.glob(os.path.join(path,extension)):
-        list_files_htmls.add(file_html)
+        list_files_htmls.append(file_html)
+    
+    return sorted(list_files_htmls)
         
-    return list_files_htmls
         
-        
-def main():
+def main(path_origem,path_destino):
     PATH = "testes/1904/09 23"
-    files_htmls = get_files_htmls(PATH)
-
-    path_json_file = os.path.join(FOLDER_JSON_FILES,PLOTTER,create_new_name(file_html))
-    contexto = pyhtml.create_context_html(file_html)
-    lista_dados = pyhtml.struct_base_file(contexto, "table")
-    dicionario = pyhtml.create_dict_dados(lista_dados)
-    
-    write_json_file(
-        path_json_file,dados=dicionario
-    )        
-    dicionario.clear()
-    
+    files_htmls = get_files_htmls(path_origem)
+    for file_html in files_htmls:
+        path_json_file = os.path.join(FOLDER_JSON_FILES,PLOTTER,create_new_name(file_html))
+        contexto = pyhtml.create_context_html(file_html)
+        lista_dados = pyhtml.struct_base_file(contexto, "table")
+        dicionario = pyhtml.create_dict_dados(lista_dados)
+        
+        write_json_file(
+            path_json_file,dados=dicionario
+        )        
+        dicionario.clear()
+        
 
 if __name__ == "__main__":
     main()
