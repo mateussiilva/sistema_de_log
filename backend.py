@@ -3,9 +3,6 @@ from files.pyjson.json_mat import write_json_file
 import os
 import glob
 
-FOLDER_JSON_FILES = "json_files"
-
-PLOTTER = PLOTTERS["prismatex"]
 
 def create_new_name(path):
     nome, e = os.path.split(path)
@@ -36,6 +33,5 @@ def main(path_origem,path_destino,plotter):
         dicionario.clear()
         
 
-if __name__ == "__main__":
-    main()
+
 
