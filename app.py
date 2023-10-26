@@ -1,11 +1,11 @@
 import os
 import backend as back
 
-import PySimpleGUI as sg
-from PySimpleGUI import WIN_CLOSED,Window,Input,Button,FolderBrowse,popup_error
+import PySimpleGUIQt as sg
+from PySimpleGUIQt import WIN_CLOSED,Window,Input,Button,FolderBrowse,popup_error
 from pprint import pprint as print
 # CONSTANTES DO SISTEMA
-SIZE_WINDOW =700,850
+# SIZE_WINDOW =700,850
 PLOTTERS = {
     "mutoh":"1604",
     "prismajet":"1602",
@@ -14,8 +14,9 @@ PLOTTERS = {
 
 # sg.theme("Dark")
 
-tab1 = sg.Tab("",    
-    [[sg.Frame("Manipulação de Arquivos",
+
+layout = [
+    [sg.Frame("Manipulação de Arquivos",
             layout=[
                 [   
                     sg.Text("Selecione a pasta de origem"),
@@ -32,21 +33,12 @@ tab1 = sg.Tab("",
         sg.InputCombo(values=["Mutoh","PrismaJet","PrismaTex"],key="-MAQUINA-",default_value="Mutoh"),
         ],           
     [
-        sg.Multiline(disabled=True,size=(90,45),key="-OUTPUT-")
+        sg.Multiline(size=(90,30),key="-OUTPUT-")
     ],
     [Button("Gerar json",key="-CREATE_JSON_FILES"),Button("Carregar Arquivo txt",key="-LOAD_FILE_TXT-")]]
-)
-
-tab2 = sg.Tab("",[
-    
-])
 
 
 
-layout_main = [
-    [sg.TabGroup(
-        [[tab1]])]
-]
 
 
 def get_plotter(plotter) -> str:
@@ -56,7 +48,7 @@ def get_plotter(plotter) -> str:
 
 
 
-window = Window("Gerenciador de LOG",layout_main,size=SIZE_WINDOW,relative_location=(800,0),resizable=True)
+window = Window("Gerenciador de LOG",layout,resizable=True)
 while 1:
     events,values = window.read()
     

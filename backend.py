@@ -19,19 +19,28 @@ def get_files_htmls(path,extension="*.HTML") -> set:
         
         
 def main(path_origem,path_destino,plotter):
-    PATH = "testes/1904/09 23"
     files_htmls = get_files_htmls(path_origem)
+    # print(files_htmls)
     for file_html in files_htmls:
-        path_json_file = os.path.join(path_destino,plotter,create_new_name(file_html))
-        contexto = pyhtml.create_context_html(file_html)
-        lista_dados = pyhtml.struct_base_file(contexto, "table")
-        dicionario = pyhtml.create_dict_dados(lista_dados)
+        path_json_file = os.path.join(
+            path_destino,plotter,create_new_name(file_html))
+        print(path_json_file)   
+    # contexto = pyhtml.create_context_html(file_html)
+    #     lista_dados = pyhtml.struct_base_file(contexto, "table")
+    #     dicionario = pyhtml.create_dict_dados(lista_dados)
         
-        write_json_file(
-            path_json_file,dados=dicionario
-        )        
-        dicionario.clear()
+    #     write_json_file(
+    #         path_json_file,dados=dicionario
+    #     )
+    #     dicionario.clear()
+    #     print(f"Gerando o arquivo json: {path_json_file}")        
         
 
 
 
+if __name__ == "__main__":
+    main(
+        plotter="1602",
+        path_origem="testes/1602/09 23",
+        path_destino="json_files/1602/09 23",
+    )

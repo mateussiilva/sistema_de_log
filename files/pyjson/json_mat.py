@@ -20,7 +20,7 @@ def read_json_file(name_file_json):
     
     
 if __name__ == "__main__":
-    file_teste_json = "/home/mateus/projetos/sistema_de_log/teste.json"
+    file_teste_json = "json_files/1602/09 23/1602/01 09 23.json"
     if write_json_file(file_teste_json,{"nome":"mateus","idade":22}):
         dados = read_json_file(file_teste_json)
         print(len(dados))
