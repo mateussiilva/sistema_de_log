@@ -1,8 +1,8 @@
 package main
 
 import (
-	// "fmt"
 	"fmt"
+
 	"os"
 )
 
@@ -16,8 +16,11 @@ import (
 
 
 func main() {
+	args := os.Args;
+	if len(args) < 2{
+		fmt.Println("<PATH FILES HTMLS>")
+		os.Exit(1)
+	}
+	const path_htmls = sli
 
-	e := os.Rename("teste.txt","novo_teste.txt")
-	// fmt.Println("Arquivo renomeado com sucesso")
-	fmt.Println(e)
 }
