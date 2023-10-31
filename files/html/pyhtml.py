@@ -12,6 +12,13 @@ def struct_base_file(content_html,target_tag):
 
 
 def create_dict_dados(base_list):
+    """_summary_
+
+    Args:
+        base_list (list): _description_
+
+    Retunrs
+    """
     lista_dicionarios = []
     for tabela in base_list:
         chaves = list(
@@ -37,6 +44,7 @@ def create_dict_dados(base_list):
         # removendo o primeiro elemento
         valor_0 = chaves.pop(0)
         
+        
         if valor_0 == "INICIAR TRABALHO DE RIP":
             # # removendo o ultimo elemento
             chaves.pop(len(chaves) - 1)
@@ -54,14 +62,3 @@ def create_dict_dados(base_list):
 
     return dicionarios
              
-
-
-
-
-if __name__ == "__main__":
-    path_html_file = "/home/mateus/projetos/gerenciador_de_log/arquivos_htmls/29 08 23.HTML"
-    content_html = create_context_html(path_html_file)
-    list_dados = struct_base_file(content_html,"table")
-    dicinarios_limpos = create_dict_dados(list_dados)
-    for dados in dicinarios_limpos:
-        print(dados)

@@ -12,7 +12,8 @@ PLOTTERS = {
     "prismatex":"1904"
     }
 
-# sg.theme("Dark")
+
+# sg.theme("DarkBlue")
 
 
 layout = [

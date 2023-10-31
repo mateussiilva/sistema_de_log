@@ -1,9 +1,9 @@
 from files.pytxt import pytxt
-from files.pyjson import json_mat
+from files.pyjson import pyjson
 
 
 file_json = r"json_files/1904/01 09 23.json"
-dados_json = json_mat.read_json_file(file_json).get("imp_1")
+dados_json = pyjson.read_json_file(file_json).get("imp_1")
 
 print(dados_json)
 # for value in dados_json:
@@ -17,3 +17,9 @@ print(dados_json)
     #     data_envio = value.get('INÍCIO, DATA E HORA DO RIP')
     # except:
     #     print("Deu pau")
+    
+    
+class GerenciadorDeLog():
+    def _init__(self) -> None:
+        pass
+    
