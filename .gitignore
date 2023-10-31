@@ -11,5 +11,5 @@
 .vscode/
 __pycache__/
 .venv/
-testes/
+files_htmls/
 json_files/
