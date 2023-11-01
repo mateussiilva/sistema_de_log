@@ -12,22 +12,21 @@ def create_new_name(path):
     return n + ".json"
 
 
-def get_files_htmls(path,extension="*.HTML") -> set:
-    list_files_htmls = []
-    for file_html in glob.glob(os.path.join(path,extension)):
-        list_files_htmls.append(file_html)
-    
-    return sorted(list_files_htmls)
-        
-        
 
+    
 if __name__ == "__main__":
     # HTML
-    DIR_HTMLS = "files_htmls"
+    DIR_HTMLS = "\\STORAGE-SILKART\impressao\LOGS DAS MAQUINAS"
     PLOTTER = "1904"
     MES = "09 23"
     PATH = os.path.join(DIR_HTMLS,PLOTTER,MES)
-    
+    print(PATH)
+    arquivos_htmls = [
+        os.path.join(PATH,file) for file in os.listdir(rf"{PATH}")]
+    arquivos_htmls.sort()
+    for arquivo in arquivos_htmls:
+        print(arquivo)
+    exit(1)
     if os.path.exists(PATH):
        print("Pasta existe")
     else:
@@ -36,6 +35,7 @@ if __name__ == "__main__":
             os.mkdir(PATH)
         except Exception as err:
             print("Houve um error %s",err)
+            exit(1)
             
     
     # JSON

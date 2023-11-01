@@ -1,25 +1,43 @@
 from files.pytxt import pytxt
+from files.html import pyhtml
 from files.pyjson import pyjson
+import glob
+import os
 
 
-file_json = r"json_files/1904/01 09 23.json"
-dados_json = pyjson.read_json_file(file_json).get("imp_1")
+def criar_nome_novo(path):
+    nome, e = os.path.split(path)
+    n, exte = os.path.splitext(e)
+    return n + ".json"
 
-print(dados_json)
-# for value in dados_json:
-#     diemensao = dados_json.get("DIMENS\u00c3O")  
-#     print(diemensao)
-    # try:
-    #     nome_arquivo = value.get("ARQUIVO")
-    #     dimensao = value.get("DIMENS\u00c3O")
-    #     perfil_icc = value.get('PERFIL ICC DE SAÍDA')
-    #     quantidade = value.get('QUANTIDADE DE CÓPIAS')
-    #     data_envio = value.get('INÍCIO, DATA E HORA DO RIP')
-    # except:
-    #     print("Deu pau")
+def get_files_htmls(path,extension="*.HTML") -> set:
+    list_files_htmls = []
+    for file_html in glob.glob(os.path.join(path,extension)):
+        list_files_htmls.append(file_html)
     
+    return sorted(list_files_htmls)
+
+DIR_HTMLS = "Z:\LOGS DAS MAQUINAS"
+PLOTTER = "1604"
+MES = "08 23"
+PATH_HTML = os.path.join(DIR_HTMLS,PLOTTER,MES)
+
+DIR_JSON = "Z:\LOGS DAS MAQUINAS\JSON"
+PATH_JSON = os.path.join(DIR_JSON,PLOTTER,MES)
+
+for arquivo_html in get_files_htmls(PATH_HTML):
+    nome_json_arquivo = os.path.join(PATH_JSON,criar_nome_novo(arquivo_html))
+    # print(nome_json_arquivo)
+    context_html = pyhtml.create_context_html(arquivo_html)
+    listas_tabelas = pyhtml.struct_base_file(context_html)
+    lista_dicionarios = pyhtml.create_dict_dados(listas_tabelas)
     
-class GerenciadorDeLog():
-    def _init__(self) -> None:
-        pass
+
+    print(nome_json_arquivo)
+    pyjson.write_json_file(
+        nome_json_arquivo,
+        lista_dicionarios)
+    
+    lista_dicionarios.clear()
+    listas_tabelas.clear()
     
