@@ -9,6 +9,7 @@
 
 # PASTAS DE DESENVOLVIMENTO
 .vscode/
+.idea/
 __pycache__/
 .venv/
 files_htmls/
