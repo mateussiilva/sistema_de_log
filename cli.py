@@ -1,12 +1,20 @@
-from files.pyjson import pyjson
-from files.pytxt import pytxt
+import unittest
 
-if __name__ == "__main__":
-    file_json = r"json_files/1904/01 09 23.json"
-    dados_json = pyjson.read_json_file(file_json)
-    lista_dados = pytxt.gravar_informações_uteis(dados_json)
-    print(lista_dados)
-    # with open("arquivos_.txt","w+") as file:
-    #     for linhas in lista_dados:
-    #         l = linhas + "\n"
-    #         file.write(l)
+class TestStringMethods(unittest.TestCase):
+
+    def test_upper(self):
+        self.assertEqual('foo'.upper(), 'FO')
+
+    def test_isupper(self):
+        self.assertTrue('FOO'.isupper())
+        self.assertFalse('Foo'.isupper())
+
+    def test_split(self):
+        s = 'hello world'
+        self.assertEqual(s.split(), ['hello', 'world'])
+        # check that s.split fails when the separator is not a string
+        with self.assertRaises(TypeError):
+            s.split(2)
+
+if __name__ == '__main__':
+    unittest.main()
