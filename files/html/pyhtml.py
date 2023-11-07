@@ -12,7 +12,7 @@ def struct_base_file(content_html,target_tag="table"):
 
 
 def create_dict_dados(base_list):
-    """_summary_
+    """Essa função recebe um lista base contecno 
 
     Args:
         base_list (list): _description_
