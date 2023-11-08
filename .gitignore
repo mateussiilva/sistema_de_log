@@ -4,7 +4,7 @@
 #IGNORANDO AQUIVOS 
 *.HTML
 *.json
-
+*.zip
 
 # PASTAS DE DESENVOLVIMENTO
 .vscode/
