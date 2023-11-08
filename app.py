@@ -13,7 +13,7 @@ PLOTTERS = {
     }
 
 
-# sg.theme("DarkBlue")
+sg.theme("DarkBlue")
 
 
 layout = [
