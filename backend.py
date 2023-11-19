@@ -8,7 +8,7 @@ def validar_extensao(extensao_arquivo,extensao_alvo="html") -> bool:
     return True if extensao_arquivo.strip(".").lower() == extensao_alvo else False
 
 
-def get_files_htmls(path):
+def pegar_arquivos_html(path):
     import glob
     lista_arquivos = []
     for arquivo in os.listdir(path):
@@ -21,20 +21,27 @@ def get_files_htmls(path):
     return sorted(lista_arquivos)
 
 
+def verificar_pasta_existente(nome_pasta,caminho=".") -> bool:
+    cam = os.path.join(caminho,nome_pasta) 
+    if os.path.exists(cam) and os.path.isdir(cam):
+        return True
+    
+    return False
 
 
 
 if __name__ == "__main__":
+    PLOTTERS = {"mutoh":"1604","prisamjet":"1602","prismatetext":"1904"}
     PATH = "/media/mateussiilva/D395-E345/ARQUIVOS_HTMLS_ATUAIS/"
-    # arquivo_jet = get_files_htmls("/tmp/files_htmls/1602/09 23")[0]
-    # arquivo_mutoh = get_files_htmls("/tmp/files_htmls/1604/09 23")[0]
-    arquivo_tex = get_files_htmls(os.path.join(PATH,"1904/09 23"))[0]
+
+    print(verificar_pasta_existente(PATH,PLOTTERS.get("mutoh")))
+    # arquivo_tex = pegar_arquivos_html(os.path.join(PATH,"1904/09 23"))[0]
     
-    nome_json_file = os.path.split(arquivo_tex)[1].replace(".HTML",".json") 
-    print(nome_json_file)
+    # nome_json_file = os.path.split(arquivo_tex)[1].replace(".HTML",".json") 
+    # print(nome_json_file)
     
-    contexto_jet  = pyhtml.struct_base_file(pyhtml.create_context_html(arquivo_tex))
-    dicionario = pyhtml.create_dict_dados(contexto_jet)
+    # contexto_jet  = pyhtml.struct_base_file(pyhtml.create_context_html(arquivo_tex))
+    # dicionario = pyhtml.create_dict_dados(contexto_jet)
     
-    with open(nome_json_file,"w+") as file:
-        json.dump(dicionario,file)
+    # with open(nome_json_file,"w+") as file:
+    #     json.dump(dicionario,file)
