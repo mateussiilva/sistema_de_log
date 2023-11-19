@@ -21,20 +21,26 @@ def pegar_arquivos_html(path):
     return sorted(lista_arquivos)
 
 
-def verificar_pasta_existente(nome_pasta,caminho=".") -> bool:
-    cam = os.path.join(caminho,nome_pasta) 
-    if os.path.exists(cam) and os.path.isdir(cam):
+def verificar_pasta_existente(caminho_pasta) -> bool:
+    # cam = os.path.join(caminho,nome_pasta) 
+    if os.path.exists(caminho_pasta) and os.path.isdir(caminho_pasta):
         return True
     
     return False
 
-
+def criar_pasta(caminho_pasta) -> bool:
+    try:
+        os.mkdir(caminho_pasta)
+    except:
+        return False
+    return True
+        
 
 if __name__ == "__main__":
     PLOTTERS = {"mutoh":"1604","prisamjet":"1602","prismatetext":"1904"}
-    PATH = "/media/mateussiilva/D395-E345/ARQUIVOS_HTMLS_ATUAIS/"
-
-    print(verificar_pasta_existente(PATH,PLOTTERS.get("mutoh")))
+    CAMINHO_DE_ORIGEM = "/media/mateussiilva/D395-E345/ARQUIVOS_HTMLS_ATUAIS/"
+    CAMINHO_DE_DESTINO = "/media/mateussiilva/D395-E345/arquivos_json"
+    MESES = ("08 23","")
     # arquivo_tex = pegar_arquivos_html(os.path.join(PATH,"1904/09 23"))[0]
     
     # nome_json_file = os.path.split(arquivo_tex)[1].replace(".HTML",".json") 
