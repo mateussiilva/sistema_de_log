@@ -1,5 +1,12 @@
 from bs4 import BeautifulSoup
 
+CHAVES = (
+    'ARQUIVO',
+    'DIMENSÃO',
+    'INÍCIO, DATA E HORA DO RIP',
+    'PERFIL ICC DE SAÍDA',
+    'QUANTIDADE DE CÓPIAS',
+)
 
 def create_context_html(path_file_html:str):
     with open(path_file_html,"r",encoding="latin-1") as file:
@@ -48,13 +55,17 @@ def create_dict_dados(base_list):
         if valor_0 == "INICIAR TRABALHO DE RIP":
             # # removendo o ultimo elemento
             chaves.pop(len(chaves) - 1)
-            dicionario = dict(zip(chaves, valores))
+            dicionario_temp = dict(zip(chaves, valores))
+            dicionario = {}
+            for chave,valor in dicionario_temp.items():
+                if chave in CHAVES:
+                    dicionario[chave] = valor
             chaves.clear()
             valores.clear()
             
             lista_dicionarios.append(dicionario.copy())
             dicionario.clear()
-
+    
     dicionarios = {
         f"imp_{k}": v
         for k, v in enumerate(lista_dicionarios)
