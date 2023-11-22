@@ -13,8 +13,7 @@ PLOTTERS = {
     }
 
 
-sg.theme("DarkBlue")
-
+# sg.theme("DarkBlue")
 
 layout = [
     [sg.Frame("Manipulação de Arquivos",

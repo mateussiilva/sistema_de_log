@@ -1,5 +1,9 @@
 from pprint import pprint as print
 import json
+import copy
+import PySimpleGUI as sg
+import sys
+
 
 impressao = {
         "ARQUIVO": "Z:\\das minys\\CORRIDOS VERAO 2023\\ESTAPAS CONFERIDAS\\D201.tif",
@@ -17,26 +21,43 @@ def limpar_dimensao(texto):
 with open("01 09 23.json","r") as file:
     dados = json.load(file)
 
-impressoes_moda = []
-impressao_tactel = []
-impressoes_papel = []
 
-soma_moda = soma_painel = soma_papel = 0
-for impressao,dado in dados.items():
-    nome = dado.get("ARQUIVO").lower()
-    # print(nome)
-    if "das minys" in nome:
-        quantidade_copias = int(dado.get("QUANTIDADE DE C\u00d3PIAS"))
-        dimensao = limpar_dimensao(dado.get("DIMENS\u00c3O"))
-        metros = (quantidade_copias * dimensao) // 100
-        soma_moda += metros
+
+
+def criar_matrix(dados:dict) -> list[list]:
+    matrix = []
+    tmp = []
+    for dado in dados.values():
+        for valor in dado.values():
+            tmp.append(valor)
+        matrix.append(tmp[:])
+        tmp.clear()
         
-    elif "tactel" in nome or "malha" in nome:
-        quantidade_copias = int(dado.get("QUANTIDADE DE C\u00d3PIAS"))
-        dimensao = limpar_dimensao(dado.get("DIMENS\u00c3O"))
-        metros = (quantidade_copias * dimensao) // 100
-        soma_painel += metros 
+    return matrix
+matrix_de_dados= criar_matrix(dados)
+    
+
+headers = ["Arquivo","Dimensao","Perfil ICC","Quantidade de Copias","Data de Impressão"]
+
+layout = [
+    [sg.Table(values=matrix_de_dados,
+              headings=headers,enable_click_events=True,enable_events=True,
+              selected_row_colors="Red on Yellow",justification="centr")]
+]
 
 
-print(f"TOTAL DE IMPRESSÃO DE MODA: {soma_moda}")
-print(f"TOTAL DE IMPRESSÃO DE PAINEL: {soma_painel}")
+window = sg.Window(" ",layout)
+
+while True:
+    events,values = window.read()
+    
+    if events == sg.WIN_CLOSED:
+        break
+    
+window.close()
+
+    
+    
+
+
+    
