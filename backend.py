@@ -40,7 +40,10 @@ if __name__ == "__main__":
     PLOTTERS = {"mutoh":"1604","prisamjet":"1602","prismatetext":"1904"}
     CAMINHO_DE_ORIGEM = "/media/mateussiilva/D395-E345/ARQUIVOS_HTMLS_ATUAIS/"
     CAMINHO_DE_DESTINO = "/media/mateussiilva/D395-E345/arquivos_json"
-    MESES = ("08 23","")
+    print(tuple(map(lambda d: d, os.listdir(CAMINHO_DE_ORIGEM))))
+    MESES = ("08 23","09 23", "10 23","11 23")
+    for mes in MESES:
+        arquivo_origem = 
     # arquivo_tex = pegar_arquivos_html(os.path.join(PATH,"1904/09 23"))[0]
     
     # nome_json_file = os.path.split(arquivo_tex)[1].replace(".HTML",".json") 
