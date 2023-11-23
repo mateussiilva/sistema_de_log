@@ -13,8 +13,8 @@ impressao = {
     }
 
 def limpar_nome(texto):
-    
-
+    lista_texto = texto.split("\\")
+    return lista_texto[len(lista_texto) -1]
 
 
 def limpar_dimensao(texto):
@@ -30,8 +30,11 @@ def orgnizar_lista(dicionario,env):
     for chave,valor in dicionario.items():
         if chave == "DIMENSÃO":
             qtd_copias = int(dicionario["QUANTIDADE DE C\u00d3PIAS"])
-            metros = str(qtd_copias * limpar_dimensao(valor))
+            metros = str(round(qtd_copias * limpar_dimensao(valor))/100)
             env.append(metros)
+        elif chave == "ARQUIVO":
+            nome_limpo = limpar_nome(valor)
+            env.append(nome_limpo)
         elif chave != "QUANTIDADE DE C\u00d3PIAS" and \
             chave != "PERFIL ICC DE SA\u00cdDA":
             env.append(valor)
@@ -53,17 +56,22 @@ def criar_matrix(dados:dict) -> list[list]:
 
 matrix_de_dados= criar_matrix(dados)
 
-print(type(matrix_de_dados))
-print(matrix_de_dados)
+# print(type(matrix_de_dados))
+# print(matrix_de_dados)
 
 
+largura_maxima_base = max(list(map(lambda li: len(li[0]), matrix_de_dados)))
+print(largura_maxima_base)
 
-# headers = ["Arquivo","Dimensao","Perfil ICC","Quantidade de Copias","Data de Impressão"]
+headers = ["Nome do Arquivo","Quantide(metros)","Data e Hora da Impressão"]
 
 layout = [
     [sg.Table(values=matrix_de_dados,
+              headings=headers,
               enable_click_events=True,enable_events=True,
-              selected_row_colors="Red on Yellow",justification="center")]
+              col_widths=100,
+              selected_row_colors="Red on Yellow",justification="center",
+              auto_size_columns=True,size=(None,50),alternating_row_color="Gray")]
 ]
 
 
