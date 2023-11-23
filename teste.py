@@ -21,8 +21,6 @@ def limpar_dimensao(texto):
     return float(texto.replace("cm","").split(" x ")[1])
 
 
-with open("01 09 23.json","r") as file:
-    dados = json.load(file)
 
 
 def orgnizar_lista(dicionario,env):
@@ -54,31 +52,43 @@ def criar_matrix(dados:dict) -> list[list]:
         
     return matrix
 
-matrix_de_dados= criar_matrix(dados)
+
 
 # print(type(matrix_de_dados))
 # print(matrix_de_dados)
 
 
-largura_maxima_base = max(list(map(lambda li: len(li[0]), matrix_de_dados)))
-print(largura_maxima_base)
+# largura_maxima_base = max(list(map(lambda li: len(li[0]), matrix_de_dados)))
+# print(largura_maxima_base)
 
+def pegar_arquivo_json():
+    return sg.popup_get_file("Selecione o arquivo")
+
+
+caminho_arquivo = pegar_arquivo_json()
 headers = ["Nome do Arquivo","Quantide(metros)","Data e Hora da Impressão"]
 
 layout = [
-    [sg.Table(values=matrix_de_dados,
+    [sg.Table(values=[],
               headings=headers,
               enable_click_events=True,enable_events=True,
               col_widths=100,
               selected_row_colors="Red on Yellow",justification="center",
-              auto_size_columns=True,size=(None,50),alternating_row_color="Gray")]
+              auto_size_columns=True,size=(None,50),alternating_row_color="Gray",k="-TABELA-")]
 ]
 
 
 window = sg.Window(" ",layout)
 
 while True:
-    events,values = window.read()
+    events,values = window.read(timeout=1000)
+    with open(caminho_arquivo,"r") as file:
+    
+        dados = json.load(file)
+    matrix_de_dados= criar_matrix(dados)
+    if events ==sg.TIMEOUT_KEY:
+        # window.refresh()
+        window["-TABELA-"].update(values=matrix_de_dados)
     
     if events == sg.WIN_CLOSED:
         break
