@@ -22,27 +22,45 @@ with open("01 09 23.json","r") as file:
     dados = json.load(file)
 
 
+def orgnizar_lista(dicionario,env):
+    
+    for chave,valor in dicionario.items():
+        if chave == "DIMENSÃO":
+            qtd_copias = int(dicionario["QUANTIDADE DE C\u00d3PIAS"])
+            metros = str(qtd_copias * limpar_dimensao(valor))
+            env.append(metros)
+        elif chave != "QUANTIDADE DE C\u00d3PIAS" and \
+            chave != "PERFIL ICC DE SA\u00cdDA":
+            env.append(valor)
+                
+            
+    return env
+
 
 
 def criar_matrix(dados:dict) -> list[list]:
     matrix = []
     tmp = []
-    for dado in dados.values():
-        for valor in dado.values():
-            tmp.append(valor)
+    for _,dado in dados.items():
+        tmp = orgnizar_lista(dado,tmp)
         matrix.append(tmp[:])
         tmp.clear()
         
     return matrix
-matrix_de_dados= criar_matrix(dados)
-    
 
-headers = ["Arquivo","Dimensao","Perfil ICC","Quantidade de Copias","Data de Impressão"]
+matrix_de_dados= criar_matrix(dados)
+
+print(type(matrix_de_dados))
+print(matrix_de_dados)
+
+
+
+# headers = ["Arquivo","Dimensao","Perfil ICC","Quantidade de Copias","Data de Impressão"]
 
 layout = [
     [sg.Table(values=matrix_de_dados,
-              headings=headers,enable_click_events=True,enable_events=True,
-              selected_row_colors="Red on Yellow",justification="centr")]
+              enable_click_events=True,enable_events=True,
+              selected_row_colors="Red on Yellow",justification="center")]
 ]
 
 
@@ -54,7 +72,7 @@ while True:
     if events == sg.WIN_CLOSED:
         break
     
-window.close()
+# window.close()
 
     
     

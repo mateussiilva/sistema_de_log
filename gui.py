@@ -1,82 +1,31 @@
-import os
-import backend as back
-
-import PySimpleGUI as sg
-from PySimpleGUI import WIN_CLOSED,Window,Input,Button,FolderBrowse,popup_error
-from pprint import pprint as print
-# CONSTANTES DO SISTEMA
-# SIZE_WINDOW =700,850
-PLOTTERS = {
-    "mutoh":"1604",
-    "prismajet":"1602",
-    "prismatex":"1904"
-    }
-
-
-# sg.theme("DarkBlue")
-
-layout = [
-    [sg.Frame("Manipulação de Arquivos",
-            layout=[
-                [   
-                    sg.Text("Selecione a pasta de origem"),
-                    Input(key="-INP_HTMLS-"),
-                    FolderBrowse("Pasta de Origem",key="-PATH_SOURCE_HTMLS-")
-                ],
-                [
-                    sg.Text("Selecione a pasta de destino"),
-                    Input(key="-INP_JSONS-"),
-                    FolderBrowse("Pasta de Origem",key="-PATH_DESTINO_JSONS-")
-                ]])],
-    [
-        sg.Text("Selecione a maquina:",),
-        sg.InputCombo(values=["Mutoh","PrismaJet","PrismaTex"],key="-MAQUINA-",default_value="Mutoh"),
-        ],           
-    [
-        sg.Multiline(size=(90,30),key="-OUTPUT-")
-    ],
-    [Button("Gerar json",key="-CREATE_JSON_FILES"),Button("Carregar Arquivo txt",key="-LOAD_FILE_TXT-")]]
+# import PySimpleGUI as sg
 
 
 
-
-
-def get_plotter(plotter) -> str:
-    for plotter,value in PLOTTERS.items():
-        if plotter == plotter:
-            return value
-
-
-
-window = Window("Gerenciador de LOG",layout,resizable=True)
-while 1:
-    events,values = window.read()
+# layout = [
+#     [sg.Text("Caminho do arquivo:"),
+#      sg.Input(key="-CAMINHO_ARQUIVO_JSON-"),
+#      sg.FileBrowse("Selecione o Arquivo",key="-SELECIONAR_ARQUIVO-")
+#      ],
     
-    if events == "-CREATE_JSON_FILES":
-        MAQUINA = get_plotter(values["-MAQUINA-"])
-        FOLDER_FILES_HTMLS = values.get("-INP_HTMLS-")
-        FOLDER_FILES_JSONS = values.get("-INP_JSONS-")
+# ]
+
+
+# window = sg.Window(" ",layout)
+
+# while True:
+#     events,values = window.read(timeout=1000)
+#     caminho_arquivo = values["-CAMINHO_ARQUIVO_JSON-"]
+    
+    
+#     if events == sg.WINDOW_CLOSED:
+#         break
+    
+#     if events == "-SELECIONAR_ARQUIVO":
+#         tabela = [sg.Table(values=["","",""])]
+#         layout.append(tabela)
+#         window[""].update(layout)
         
-        if FOLDER_FILES_HTMLS is not None and FOLDER_FILES_JSONS:
-            back.main(
-                path_origem=FOLDER_FILES_HTMLS,
-                path_destino=FOLDER_FILES_JSONS,
-                plotter=MAQUINA
-            )
-
-        else:
-            popup_error(
-                "Selecione as pastas de ORIGEM e de DESTINO",title="ERROR AO SELECIONAR AS PASTAS")
-            break
-        
-    if events == "-LOAD_FILE_TXT-":
-        arquivo = "arquivo_.txt"
-        with open(arquivo,"r") as file:
-            window["-OUTPUT-"].update(file.read())
-    if events == WIN_CLOSED:
-        break
-    
-        
-    
-    
-window.close()    
+#                 # print(linha)
+#     elif events == sg.TIMEOUT_KEY:
+#         window.refresh()
