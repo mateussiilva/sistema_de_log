@@ -1,8 +1,7 @@
 from pprint import pprint as print
 import json
-import copy
 import PySimpleGUI as sg
-import sys
+
 
 
 impressao = {
@@ -12,6 +11,10 @@ impressao = {
         "QUANTIDADE DE C\u00d3PIAS": "25",
         "IN\u00cdCIO, DATA E HORA DO RIP": "06:27:34 01/09/2023"
     }
+
+def limpar_nome(texto):
+    
+
 
 
 def limpar_dimensao(texto):
