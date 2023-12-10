@@ -49,14 +49,3 @@ if __name__ == "__main__":
                 caminho_arquivo = os.path.join(c_completo,arquivo_html)
                 print(caminho_arquivo)
             print("=-="*10)
-    # print("---------------")
-    # arquivo_tex = pegar_arquivos_html(os.path.join(PATH,"1904/09 23"))[0]
-    
-    # nome_json_file = os.path.split(arquivo_tex)[1].replace(".HTML",".json") 
-    # print(nome_json_file)
-    
-    # contexto_jet  = pyhtml.struct_base_file(pyhtml.create_context_html(arquivo_tex))
-    # dicionario = pyhtml.create_dict_dados(contexto_jet)
-    
-    # with open(nome_json_file,"w+") as file:
-    #     json.dump(dicionario,file)
