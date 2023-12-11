@@ -2,7 +2,7 @@ import os
 import pyhtml 
 import json
 
-# from pprint import pprint as print
+
 
 def validar_extensao(extensao_arquivo,extensao_alvo="html") -> bool:
     return True if extensao_arquivo.strip(".").lower() == extensao_alvo else False

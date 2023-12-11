@@ -1,16 +1,28 @@
-from json import load,dump
+from typing import TypeAlias
+from json import load,dump,dumps
+
 
 
 
 class PyJson:
-    def __init__(self,nome_arquivo_json:str,codificacao:str=None) -> None:
+    def __init__(self,nome_arquivo_json:str) -> None:
         self.arquivo_json = nome_arquivo_json
-        self.encode = codificacao
-        pass
     
-    def  ler_arquivo_json(self):
-        pass
+    def  ler_arquivo_json(self) -> dict:
+        with open(self.arquivo_json,"r") as file:
+            data = load(file)
+        return data
     
-    def escrever_json(self):
-        pass
+    def escrever_json(self,dados,nome_arquivo) -> bool:
+        try:
+            fp = open(nome_arquivo,"w")
+            dump(dados,fp)
+        except:
+            return False
+        
+        finally:
+            fp.close()
+            
+        return True
+    
     
