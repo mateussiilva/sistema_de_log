@@ -14,8 +14,8 @@ def create_context_html(path_file_html:str):
     return BeautifulSoup(html_content,"html.parser")
 
 
-def struct_base_file(content_html,target_tag="table"):
-    return list(content_html.find_all(target_tag))
+# def struct_base_file(content_html,target_tag="table"):
+#     return list(content_html.find_all(target_tag))
 
 
 def create_dict_dados(base_list):

@@ -4,36 +4,7 @@ import json
 
 
 
-def validar_extensao(extensao_arquivo,extensao_alvo="html") -> bool:
-    return True if extensao_arquivo.strip(".").lower() == extensao_alvo else False
 
-
-def pegar_arquivos_html(path):
-    import glob
-    lista_arquivos = []
-    for arquivo in os.listdir(path):
-        _,extensao = os.path.splitext(arquivo)
-
-        if validar_extensao(extensao):
-            __ = os.path.join(path,arquivo)
-            lista_arquivos.append(__)
-            
-    return sorted(lista_arquivos)
-
-
-def verificar_pasta_existente(caminho_pasta) -> bool:
-    # cam = os.path.join(caminho,nome_pasta) 
-    if os.path.exists(caminho_pasta) and os.path.isdir(caminho_pasta):
-        return True
-    
-    return False
-
-def criar_pasta(caminho_pasta) -> bool:
-    try:
-        os.mkdir(caminho_pasta)
-    except:
-        return False
-    return True
         
 
 if __name__ == "__main__":

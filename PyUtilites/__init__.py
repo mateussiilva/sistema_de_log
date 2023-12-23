@@ -3,7 +3,6 @@ import json
 
 
 
-
 def limpar_nome(texto):
     lista_texto = texto.split("\\")
     return lista_texto[len(lista_texto) -1]
@@ -49,4 +48,44 @@ def carregar_dados(caminho_arquivo):
     return dados
 
 
-    
+
+
+def validar_extensao(extensao_arquivo,extensao_alvo="html") -> bool:
+    """Validar extensao de arquivo
+
+    Args:
+        extensao_arquivo (str): Recebe a extensao do arquivo a ser testado
+        extensao_alvo (str, tuple): Recebe uma extensão alvo ou uma tupla com varias extensoes
+            caso a extensao do arquivo seja igual a extensao alvo a funcão retorna um True
+
+    Returns:
+        True: Caso a extensao do arquivo seja igual a do alvo
+        False: Caso a extensao no seja valida
+    """
+    return True if extensao_arquivo.strip(".").lower() == extensao_alvo else False
+
+
+def pegar_arquivos_html(path):
+    import glob
+    lista_arquivos = []
+    for arquivo in os.listdir(path):
+        _,extensao = os.path.splitext(arquivo)
+
+        if validar_extensao(extensao):
+            __ = os.path.join(path,arquivo)
+            lista_arquivos.append(__)
+            
+    return sorted(lista_arquivos)
+
+
+def verificar_pasta_existente(caminho_pasta:str) -> bool:
+    if os.path.exists(caminho_pasta) and os.path.isdir(caminho_pasta):
+        return True    
+    return False
+
+def criar_pasta(caminho_pasta:str) -> bool:
+    try:
+        os.mkdir(caminho_pasta)
+    except:
+        return False
+    return True
