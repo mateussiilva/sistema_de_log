@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 from PyUtilites import criar_matrix
+from PySimpleGUI import popup_ok
 from json import load
 
 
@@ -38,9 +39,6 @@ while 1:
     with open(values["-PATH_JSON-"]) as file:
         valores = criar_matrix(load(file))
     valores = valores
-    """ valores = [["Painel redondo","15","22/12/23"],["Painel Quadrado","10","10/15/20"],
-               ["Painel Quadrado","5","10/15/20"]]
-     """
     if events == "-LOAD_TABLE-":
         window["-TABELA-"].update(values=valores)
         window.refresh()
@@ -55,7 +53,9 @@ while 1:
         for indice in indices:
             metros = float(valores[indice][1])
             s += metros
-        print(s)
+        msg = f"{s:.2f}"
+        popup_ok(msg)
+        print(msg)
         
     if events == sg.WIN_CLOSED:
         break
