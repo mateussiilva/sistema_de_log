@@ -1,6 +1,6 @@
 from pprint import pprint as print
 import json
-
+import os
 
 
 def limpar_nome(texto):
@@ -51,17 +51,6 @@ def carregar_dados(caminho_arquivo):
 
 
 def validar_extensao(extensao_arquivo,extensao_alvo="html") -> bool:
-    """Validar extensao de arquivo
-
-    Args:
-        extensao_arquivo (str): Recebe a extensao do arquivo a ser testado
-        extensao_alvo (str, tuple): Recebe uma extensão alvo ou uma tupla com varias extensoes
-            caso a extensao do arquivo seja igual a extensao alvo a funcão retorna um True
-
-    Returns:
-        True: Caso a extensao do arquivo seja igual a do alvo
-        False: Caso a extensao no seja valida
-    """
     return True if extensao_arquivo.strip(".").lower() == extensao_alvo else False
 
 
