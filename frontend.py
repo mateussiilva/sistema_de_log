@@ -28,7 +28,7 @@ layout = [
 
 
 
-sg.theme("DarkBlue")
+# sg.theme("DarkBlue")
 window = sg.Window("Gerenciador de LOG",layout,size=SIZE)
 
 
