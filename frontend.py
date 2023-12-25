@@ -2,13 +2,13 @@ import PySimpleGUI as sg
 from PyUtilites import criar_matrix
 from PySimpleGUI import popup_ok
 from PyJson import PyJson
-# from json import load
-
+from constantes import HEADERS_TABLE, SIZE
 
 layout = [
     [sg.Text("Caminho do arquivo json"),sg.Input(key="-PATH_JSON-"),
-     sg.FileBrowse(button_text="Abrir Arquivo",initial_folder="/media/mateus/D395-E345/ProjetctFiles/arquivos_json/arquivos_antigos/")],
-        [sg.Table(values=[],
+     sg.FileBrowse(button_text="Abrir Arquivo",
+                   initial_folder="/media/mateus/D395-E345/ProjetctFiles/arquivos_json/arquivos_antigos/")],
+    [sg.Table(values=[],
               headings=HEADERS_TABLE,
               enable_click_events=True,enable_events=True,
               col_widths=100,
@@ -16,7 +16,8 @@ layout = [
               expand_y=True,
               selected_row_colors="Red on Yellow",justification="left",
               auto_size_columns=True,size=(45,32),alternating_row_color="Gray",k="-TABELA-",
-              )],
+              )
+    ],
     [
         sg.Button("Gerar Tabela",key="-LOAD_TABLE-"),
         sg.Button("Limpar Tabela",key="-CLEAR_TABLE-"),
@@ -27,7 +28,7 @@ layout = [
 
 
 
-
+sg.theme("DarkBlue")
 window = sg.Window("Gerenciador de LOG",layout,size=SIZE)
 
 
@@ -44,7 +45,6 @@ while 1:
         window.refresh()
     
     elif events == "-SUM_TABLES-":
-        print(values["-TABELA-"])
         indices = values["-TABELA-"]
         s = 0
         for indice in indices:
@@ -52,7 +52,7 @@ while 1:
             s += metros
         msg = f"{s:.2f}"
         popup_ok(msg)
-        print(msg)
+
         
     if events == sg.WIN_CLOSED:
         break
