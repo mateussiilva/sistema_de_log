@@ -12,3 +12,7 @@ __pycache__/
 .venv/
 files_htmls/
 json_files/
+
+
+# PASTA DE BUILD
+build/*
