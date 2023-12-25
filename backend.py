@@ -8,7 +8,6 @@ import json
         
 
 if __name__ == "__main__":
-    PLOTTERS = {"mutoh":"1604","prisamjet":"1602","prismatetext":"1904"}
     CAMINHO_DE_ORIGEM = "/media/mateussiilva/D395-E345/ARQUIVOS_HTMLS_ATUAIS/"
     CAMINHO_DE_DESTINO = "/media/mateussiilva/D395-E345/arquivos_json"
     MESES = ("08 23","09 23", "10 23","11 23")

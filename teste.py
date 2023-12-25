@@ -1,68 +1,24 @@
-import PySimpleGUI as sg
-from PyUtilites import criar_matrix
-from PySimpleGUI import popup_ok
-from json import load
+from PySimpleGUI import Window,WIN_CLOSED,Print,Text
 
 
-SIZE = (900,700)
-HEADERS = [
-    "Nome do Arquivo",
-    "Metros",
-    "Data da Impressão"]
 
-
+print("Hello World")
 layout = [
-    [sg.Text("Caminho do arquivo json"),sg.Input(key="-PATH_JSON-"),sg.FileBrowse(button_text="Abrir Arquivo")],
-        [sg.Table(values=[],
-              headings=HEADERS,
-              enable_click_events=True,enable_events=True,
-              col_widths=100,
-              expand_x=True,
-              expand_y=True,
-              selected_row_colors="Red on Yellow",justification="left",
-              auto_size_columns=True,size=(45,32),alternating_row_color="Gray",k="-TABELA-",
-              )],
-    [
-        sg.Button("Gerar Tabela",key="-LOAD_TABLE-"),
-        sg.Button("Limpar Tabela",key="-CLEAR_TABLE-"),
-        sg.Button("Somar Linhas",key="-SUM_TABLES-")
-    ]
+    [Text("Caminho:")],
+    [Print()]
     
 ]
 
 
 
-window = sg.Window("Gerenciador de LOG",layout,size=SIZE)
+window = Window(" ",layout)
 
-while 1:
+while True:
     events,values = window.read()
-    with open(values["-PATH_JSON-"]) as file:
-        valores = criar_matrix(load(file))
-    valores = valores
-    if events == "-LOAD_TABLE-":
-        window["-TABELA-"].update(values=valores)
-        window.refresh()
-    elif events == "-CLEAR_TABLE-":
-        window["-TABELA-"].update(values=[])
-        window.refresh()
     
-    elif events == "-SUM_TABLES-":
-        print(values["-TABELA-"])
-        indices = values["-TABELA-"]
-        s = 0
-        for indice in indices:
-            metros = float(valores[indice][1])
-            s += metros
-        msg = f"{s:.2f}"
-        popup_ok(msg)
-        print(msg)
-        
-    if events == sg.WIN_CLOSED:
+    
+    if events == WIN_CLOSED:
         break
-    
-
-    # print(values)
-    
     
     
 window.close()
