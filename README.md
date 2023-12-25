@@ -1,0 +1,8 @@
+
+
+
+# Gerar Executavel
+```
+cxFreeze "nomedo
+
+```
