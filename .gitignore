@@ -5,6 +5,7 @@
 *.HTML
 *.json
 *.zip
+*.spec
 
 # PASTAS DE DESENVOLVIMENTO
 .vscode/
