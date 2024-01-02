@@ -1,10 +1,11 @@
 import PySimpleGUI as sg
 import os
 from bs4 import BeautifulSoup
+from json import load, dump
 from PyUtilites import criar_matrix
 from PySimpleGUI import popup_ok
 from PyJson import PyJson
-from pprint import pprint as print
+# from pprint import pprint as print
 
 """ CONSTANTES """
 SIZE = (900, 700)
@@ -71,71 +72,98 @@ class ParserHtml:
         return dicionarios
 
 
-# """ FRONTEND """
-# layout = [
-#     [sg.Text("Caminho do arquivo json"), sg.Input(key="-PATH_JSON-"),
-#      sg.FileBrowse(button_text="Abrir Arquivo",
-#                    initial_folder="/media/mateus/D395-E345/ProjetctFiles/arquivos_json/arquivos_antigos/")],
-#     [sg.Table(values=[],
-#               headings=HEADERS_TABLE,
-#               enable_click_events=True, enable_events=True,
-#               col_widths=100,
-#               expand_x=True,
-#               expand_y=True,
-#               selected_row_colors="Red on Yellow", justification="left",
-#               auto_size_columns=True, size=(45, 32), alternating_row_color="Gray", k="-TABELA-",
-#               )
-#      ],
-#     [
-#         sg.Button("Gerar Tabela", key="-LOAD_TABLE-"),
-#         sg.Button("Limpar Tabela", key="-CLEAR_TABLE-"),
-#         sg.Button("Somar Linhas", key="-SUM_TABLES-")
-#     ]
+class PyJson:
+    def __init__(self):
+        pass
 
-# ]
+    def ler_json(self, nome_arquivo_json) -> dict:
+        with open(nome_arquivo_json, "r") as file:
+            data = load(file)
+        return data
+
+    def escrever_json(self, dados, nome_arquivo) -> bool:
+        try:
+            fp = open(nome_arquivo, "w+")
+            dump(dados, fp)
+        except:
+            return False
+
+        finally:
+            fp.close()
+
+        return True
 
 
-# def carregar_frontend():
-#     window = sg.Window("Gerenciador de LOG", layout, size=SIZE)
+""" FRONTEND """
+layout = [
+    [sg.Text("Caminho do arquivo json"), sg.Input(key="-PATH_JSON-"),
+     sg.FileBrowse(button_text="Abrir Arquivo",
+                   initial_folder="/media/mateus/D395-E345/ProjetctFiles/arquivos_json/arquivos_antigos/")],
+    [sg.Table(values=[],
+              headings=HEADERS_TABLE,
+              enable_click_events=True, enable_events=True,
+              col_widths=100,
+              expand_x=True,
+              expand_y=True,
+              selected_row_colors="Red on Yellow", justification="left",
+              auto_size_columns=True, size=(45, 32), alternating_row_color="Gray", k="-TABELA-",
+              )
+     ],
+    [
+        sg.Button("Gerar Tabela", key="-LOAD_TABLE-"),
+        sg.Button("Limpar Tabela", key="-CLEAR_TABLE-"),
+        sg.Button("Somar Linhas", key="-SUM_TABLES-")
+    ]
 
-#     while 1:
-#         events, values = window.read()
-#         py_json = PyJson(values["-PATH_JSON-"])
-#         valores = criar_matrix(py_json.ler_json())
+]
 
-#         if events == "-LOAD_TABLE-":
-#             window["-TABELA-"].update(values=valores)
-#             window.refresh()
-#         elif events == "-CLEAR_TABLE-":
-#             window["-TABELA-"].update(values=[])
-#             window.refresh()
 
-#         elif events == "-SUM_TABLES-":
-#             indices = values["-TABELA-"]
-#             s = 0
-#             for indice in indices:
-#                 metros = float(valores[indice][1])
-#                 s += metros
-#             msg = f"{s:.2f}"
-#             popup_ok(msg)
+def carregar_frontend():
+    window = sg.Window("Gerenciador de LOG", layout, size=SIZE)
 
-#         if events == sg.WIN_CLOSED:
-#             break
+    while 1:
+        events, values = window.read()
+        py_json = PyJson(values["-PATH_JSON-"])
+        valores = criar_matrix(py_json.ler_json())
 
-#         # print(values)
+        if events == "-LOAD_TABLE-":
+            window["-TABELA-"].update(values=valores)
+            window.refresh()
+        elif events == "-CLEAR_TABLE-":
+            window["-TABELA-"].update(values=[])
+            window.refresh()
 
-#     window.close()
+        elif events == "-SUM_TABLES-":
+            indices = values["-TABELA-"]
+            s = 0
+            for indice in indices:
+                metros = float(valores[indice][1])
+                s += metros
+            msg = f"{s:.2f}"
+            popup_ok(msg)
+
+        if events == sg.WIN_CLOSED:
+            break
+
+        # print(values)
+
+    window.close()
 
 def pegar_arquivos_html(path):
     arquivos = [
-        os.path.join(path,file)
+        os.path.join(path, file)
         for file in os.listdir(path)
-        if os.path.isfile(os.path.join(path,file))
+        if os.path.isfile(os.path.join(path, file))
     ]
     return arquivos
 
+
+def pegar_nome_arquivo(path):
+    return os.path.split(path)[1]
+
+
 if __name__ == "__main__":
-    # carregar_frontend()
+    carregar_frontend()
     PATH = "/media/mateus/D395-E345/ProjetctFiles/LOGS DAS MAQUINAS"
     PATH_DESTINO = "/tmp/arquivos_json"
     ANO = "23"
@@ -153,20 +181,37 @@ if __name__ == "__main__":
         "novembro": f"11 {ANO}",
         "dezembro": f"12 {ANO}",
     }
-    MES_ALVO = MESES["novembro"]
+    MES_ALVO = MESES["dezembro"]
+    parserhtml = ParserHtml("latin-1")
+    pyjson = PyJson()
     for plotter in PLOTTERS.values():
-        p = os.path.join(PATH,plotter)
-        
+        p = os.path.join(PATH, plotter)
+
         for mes in os.listdir(p):
-            p_destino = os.path.join(PATH_DESTINO,plotter,mes)
+            p_destino = os.path.join(PATH_DESTINO, plotter, mes)
             try:
                 os.mkdir(p_destino)
             except Exception as error:
                 pass
-                # print(error)
+                print(error)
 
             if mes == MES_ALVO:
-                p = os.path.join(PATH,plotter,mes)
+                arquivos = pegar_arquivos_html(
+                    os.path.join(PATH, plotter, mes))
+                for arquivo in arquivos:
+                    novo_nome = pegar_nome_arquivo(
+                        arquivo).replace(".HTML", ".json")
+                    arquivo_destino = os.path.join(p_destino, novo_nome)
+                    print(arquivo_destino)
+                    contexto = parserhtml.create_context_html(arquivo)
+                    listadados = parserhtml.struct_base_file(contexto)
+                    matrixdicionarios = parserhtml.create_dict_dados(
+                        listadados)
+                    pyjson.escrever_json(
+                        dados=matrixdicionarios,
+                        nome_arquivo=arquivo_destino
+                    )
 
+                print()
                 # print(pegar_arquivos_html(p))
         # print(p)
