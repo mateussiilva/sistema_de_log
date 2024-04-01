@@ -1,10 +1,8 @@
+from pyjson import PyJson
 import PySimpleGUI as sg
 import os
-import json
-
-from bs4 import BeautifulSoup
-from json import load, dump
 from PySimpleGUI import popup_ok
+from utils import criar_matrix
 
 
 """ CONSTANTES """
@@ -14,156 +12,7 @@ HEADERS_TABLE = [
     "Metros",
     "Data da Impressão"]
 
-PLOTTERS = {"mutoh": "1604", "prisamjet": "1602", "prismatetext": "1904"}
 
-""" BACKEND """
-
-CHAVES = (
-    'ARQUIVO',
-    'DIMENSÃO',
-    'INÍCIO, DATA E HORA DO RIP',
-    'PERFIL ICC DE SAÍDA',
-    'QUANTIDADE DE CÓPIAS',
-)
-
-
-class ParserHtml:
-    def __init__(self, encode) -> None:
-        self.encode = encode
-
-    def create_context_html(self, path_file_html: str):
-        with open(path_file_html, "r", encoding=self.encode) as file:
-            html_content = file.read()
-        return BeautifulSoup(html_content, "html.parser")
-
-    def struct_base_file(self, content_html, target_tag="table"):
-        return list(content_html.find_all(target_tag))
-
-    def create_dict_dados(self, base_list):
-        lista_dicionarios = []
-        for tabela in base_list:
-            chaves = list(map(lambda item: item.get_text().strip().replace(":", "").upper(),
-                              tabela.find_all("th")))
-            valores = list(map(lambda item: item.get_text().strip(),
-                               tabela.find_all("td")))
-
-            # removendo o primeiro elemento
-            valor_0 = chaves.pop(0)
-
-            if valor_0 == "INICIAR TRABALHO DE RIP":
-                # # removendo o ultimo elemento
-                chaves.pop(len(chaves) - 1)
-                dicionario_temp = dict(zip(chaves, valores))
-                dicionario = {}
-                for chave, valor in dicionario_temp.items():
-                    if chave in CHAVES:
-                        dicionario[chave] = valor
-                chaves.clear()
-                valores.clear()
-
-                lista_dicionarios.append(dicionario.copy())
-                dicionario.clear()
-
-        dicionarios = {
-            f"imp_{k}": v
-            for k, v in enumerate(lista_dicionarios)
-        }
-
-        return dicionarios
-
-
-class PyJson:
-    def __init__(self):
-        pass
-
-    def ler_json(self, nome_arquivo_json) -> dict:
-        with open(nome_arquivo_json, "r") as file:
-            data = load(file)
-        return data
-
-    def escrever_json(self, dados, nome_arquivo) -> bool:
-        try:
-            fp = open(nome_arquivo, "w+")
-            dump(dados, fp)
-        except:
-            return False
-
-        finally:
-            fp.close()
-
-        return True
-
-
-def limpar_nome(texto):
-    lista_texto = texto.split("\\")
-    return lista_texto[len(lista_texto) - 1]
-
-
-def limpar_dimensao(texto):
-    return float(texto.replace("cm", "").split(" x ")[1])
-
-
-def orgnizar_lista(dicionario, env):
-
-    for chave, valor in dicionario.items():
-        if chave == "DIMENSÃO":
-            qtd_copias = 1
-            try:
-                qtd_copias = int(dicionario["QUANTIDADE DE C\u00d3PIAS"])
-            except:
-                qtd_copias = 1
-            metros = str(round(qtd_copias * limpar_dimensao(valor))/100)
-            env.append(metros)
-        elif chave == "ARQUIVO":
-            nome_limpo = limpar_nome(valor)
-            env.append(nome_limpo)
-        elif chave != "QUANTIDADE DE C\u00d3PIAS" and \
-                chave != "PERFIL ICC DE SA\u00cdDA":
-            env.append(valor)
-
-    return env
-
-
-def criar_matrix(dados: dict):
-    matrix = []
-    tmp = []
-    for _, dado in dados.items():
-        tmp = orgnizar_lista(dado, tmp)
-        matrix.append(tmp[:])
-        tmp.clear()
-    return matrix
-
-
-def carregar_dados(caminho_arquivo):
-    with open(caminho_arquivo, "r") as file:
-        dados = json.load(file)
-    return dados
-
-
-def validar_extensao(extensao_arquivo, extensao_alvo="html") -> bool:
-    return True if extensao_arquivo.strip(".").lower() == extensao_alvo else False
-
-
-def pegar_arquivos_html(path):
-    import glob
-    lista_arquivos = []
-    for arquivo in os.listdir(path):
-        _, extensao = os.path.splitext(arquivo)
-
-        if validar_extensao(extensao):
-            __ = os.path.join(path, arquivo)
-            lista_arquivos.append(__)
-
-    return sorted(lista_arquivos)
-
-
-def verificar_pasta_existente(caminho_pasta: str) -> bool:
-    if os.path.exists(caminho_pasta) and os.path.isdir(caminho_pasta):
-        return True
-    return False
-
-
-""" FRONTEND """
 layout = [
     [sg.Text("Caminho do arquivo json"), sg.Input(key="-PATH_JSON-"),
      sg.FileBrowse(button_text="Abrir Arquivo",

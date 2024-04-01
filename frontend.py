@@ -2,8 +2,13 @@ import PySimpleGUI as sg
 from PyUtilites import criar_matrix
 from PySimpleGUI import popup_ok
 from PyJson import PyJson
-from constantes import HEADERS_TABLE, SIZE
 
+
+SIZE = (900, 700)
+HEADERS_TABLE = [
+    "Nome do Arquivo",
+    "Metros",
+    "Data da Impressão"]
 layout = [
     [sg.Text("Caminho do arquivo json"),sg.Input(key="-PATH_JSON-"),
      sg.FileBrowse(button_text="Abrir Arquivo",
@@ -34,24 +39,24 @@ window = sg.Window("Gerenciador de LOG",layout,size=SIZE)
 
 while 1:
     events,values = window.read()
-    py_json = PyJson(values["-PATH_JSON-"])
-    valores = criar_matrix(py_json.ler_json())
+    # py_json = PyJson(values["-PATH_JSON-"])
+    # valores = criar_matrix(py_json.ler_json())
 
-    if events == "-LOAD_TABLE-":
-        window["-TABELA-"].update(values=valores)
-        window.refresh()
-    elif events == "-CLEAR_TABLE-":
-        window["-TABELA-"].update(values=[])
-        window.refresh()
+    # if events == "-LOAD_TABLE-":
+    #     window["-TABELA-"].update(values=valores)
+    #     window.refresh()
+    # elif events == "-CLEAR_TABLE-":
+    #     window["-TABELA-"].update(values=[])
+    #     window.refresh()
     
-    elif events == "-SUM_TABLES-":
-        indices = values["-TABELA-"]
-        s = 0
-        for indice in indices:
-            metros = float(valores[indice][1])
-            s += metros
-        msg = f"{s:.2f}"
-        popup_ok(msg)
+    # elif events == "-SUM_TABLES-":
+    #     indices = values["-TABELA-"]
+    #     s = 0
+    #     for indice in indices:
+    #         metros = float(valores[indice][1])
+    #         s += metros
+    #     msg = f"{s:.2f}"
+    #     popup_ok(msg)
 
         
     if events == sg.WIN_CLOSED:
