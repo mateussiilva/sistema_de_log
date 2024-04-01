@@ -38,8 +38,9 @@ def carregar_frontend():
     window = sg.Window("Gerenciador de LOG", layout, size=SIZE)
     while 1:
         events, values = window.read()
-        py_json = PyJson()
-        valores = criar_matrix(py_json.ler_json(values["-PATH_JSON-"]))
+        path_file_json  = values["-PATH_JSON-"]
+        py_json = PyJson(path_file_json)
+        valores = criar_matrix(py_json.ler_json())
 
         if events == "-LOAD_TABLE-":
             window["-TABELA-"].update(values=valores)
