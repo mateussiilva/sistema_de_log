@@ -8,7 +8,7 @@ def limpar_nome(texto):
 
 
 def limpar_dimensao(texto):
-    return float(texto.replace("cm", "").split(" x ")[1])
+    return max(list(map(lambda i: float(i),texto.replace("cm", "").split(" x "))))
 
 
 def orgnizar_lista(dicionario, env):
