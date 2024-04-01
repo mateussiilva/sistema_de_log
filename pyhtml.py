@@ -2,18 +2,21 @@ from bs4 import BeautifulSoup
 
 
 class ParserHtml:
+
     def __init__(self, encode) -> None:
         self.encode = encode
-
-
-    def create_context_html(self, path_file_html: str):
+        self.__chaves = (
+            'ARQUIVO',
+            'DIMENSÃO',
+            'INÍCIO, DATA E HORA DO RIP',
+            'PERFIL ICC DE SAÍDA',
+            'QUANTIDADE DE CÓPIAS',
+        )
+    def list_dados(self, path_file_html, target_tag="table"):
         with open(path_file_html, "r", encoding=self.encode) as file:
             html_content = file.read()
-        return BeautifulSoup(html_content, "html.parser")
-
-
-    def struct_base_file(self, content_html, target_tag="table"):
-        return list(content_html.find_all(target_tag))
+        _ctx = BeautifulSoup(html_content, "html.parser")
+        return list(_ctx.find_all(target_tag))
 
 
     def create_dict_dados(self, base_list):
@@ -33,7 +36,7 @@ class ParserHtml:
                 dicionario_temp = dict(zip(chaves, valores))
                 dicionario = {}
                 for chave, valor in dicionario_temp.items():
-                    if chave in CHAVES:
+                    if chave in self.__chaves:
                         dicionario[chave] = valor
                 chaves.clear()
                 valores.clear()
@@ -47,13 +50,4 @@ class ParserHtml:
         }
 
         return dicionarios
-
-PLOTTERS = {"mutoh": "1604", "prisamjet": "1602", "prismatetext": "1904"}
-CHAVES = (
-    'ARQUIVO',
-    'DIMENSÃO',
-    'INÍCIO, DATA E HORA DO RIP',
-    'PERFIL ICC DE SAÍDA',
-    'QUANTIDADE DE CÓPIAS',
-)
 
