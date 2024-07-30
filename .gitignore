@@ -17,3 +17,7 @@ json_files/
 
 # PASTA DE BUILD
 build/*
+
+
+# Testes
+testes
