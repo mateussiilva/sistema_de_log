@@ -2,29 +2,21 @@ import PySimpleGUI as sg
 import os
 import json
 
+from config import PLOTTERS, CHAVES, SIZE
 from bs4 import BeautifulSoup
-from json import load, dump
+# from json import load, dump
+from PyJson.pyjson import PyJson
 from PySimpleGUI import popup_ok
 
 
 """ CONSTANTES """
-SIZE = (900, 700)
 HEADERS_TABLE = [
     "Nome do Arquivo",
     "Metros",
     "Data da Impressão"]
 
-PLOTTERS = {"mutoh": "1604", "prisamjet": "1602", "prismatetext": "1904"}
 
 """ BACKEND """
-
-CHAVES = (
-    'ARQUIVO',
-    'DIMENSÃO',
-    'INÍCIO, DATA E HORA DO RIP',
-    'PERFIL ICC DE SAÍDA',
-    'QUANTIDADE DE CÓPIAS',
-)
 
 
 class ParserHtml:
@@ -47,7 +39,6 @@ class ParserHtml:
             valores = list(map(lambda item: item.get_text().strip(),
                                tabela.find_all("td")))
 
-            # removendo o primeiro elemento
             valor_0 = chaves.pop(0)
 
             if valor_0 == "INICIAR TRABALHO DE RIP":
@@ -70,28 +61,6 @@ class ParserHtml:
         }
 
         return dicionarios
-
-
-class PyJson:
-    def __init__(self):
-        pass
-
-    def ler_json(self, nome_arquivo_json) -> dict:
-        with open(nome_arquivo_json, "r") as file:
-            data = load(file)
-        return data
-
-    def escrever_json(self, dados, nome_arquivo) -> bool:
-        try:
-            fp = open(nome_arquivo, "w+")
-            dump(dados, fp)
-        except:
-            return False
-
-        finally:
-            fp.close()
-
-        return True
 
 
 def limpar_nome(texto):
@@ -167,7 +136,7 @@ def verificar_pasta_existente(caminho_pasta: str) -> bool:
 layout = [
     [sg.Text("Caminho do arquivo json"), sg.Input(key="-PATH_JSON-"),
      sg.FileBrowse(button_text="Abrir Arquivo",
-                   initial_folder="/media/mateus/D395-E345/ProjetctFiles/arquivos_json/arquivos_antigos/")],
+                   initial_folder="testes/ARQUIVOS_JSON")],
     [sg.Table(values=[],
               headings=HEADERS_TABLE,
               enable_click_events=True, enable_events=True,
@@ -183,21 +152,19 @@ layout = [
         sg.Button("Limpar Tabela", key="-CLEAR_TABLE-"),
         sg.Button("Somar Linhas", key="-SUM_TABLES-")
     ]
-
 ]
 
 
 def carregar_frontend():
     window = sg.Window("Gerenciador de LOG", layout, size=SIZE)
-
     while 1:
         events, values = window.read()
         py_json = PyJson()
         valores = criar_matrix(py_json.ler_json(values["-PATH_JSON-"]))
-
         if events == "-LOAD_TABLE-":
             window["-TABELA-"].update(values=valores)
             window.refresh()
+
         elif events == "-CLEAR_TABLE-":
             window["-TABELA-"].update(values=[])
             window.refresh()
@@ -213,9 +180,6 @@ def carregar_frontend():
 
         if events == sg.WIN_CLOSED:
             break
-
-        # print(values)
-
     window.close()
 
 

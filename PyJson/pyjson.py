@@ -3,12 +3,11 @@ from json import load,dump
 
 
 class PyJson:
-    def __init__(self,nome_arquivo_json:str):
-        self.arquivo_json = nome_arquivo_json
+    def __init__(self):
+        pass
     
-    
-    def  ler_json(self) -> dict:
-        with open(self.arquivo_json,"r") as file:
+    def  ler_json(self,filename) -> dict:
+        with open(filename,"r") as file:
             data = load(file)
         return data
     
